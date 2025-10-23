@@ -13,22 +13,24 @@ LIOP a 0bud$
 $> ./rev_print | cat -e
 $
 */
+int	strleny(char *str)
+{
+	int len = 0;
+	while (str[len])
+		len++;
+	return (len);
+}
 #include <unistd.h>
 int	main(int argc, char **argv)
 {
-	int i = 0;
+	int len = strleny(argv[1]) - 1;
 	if (argc == 2)
 	{
-		while (argv[1][i])
+		while (len >= 0)
 		{
-			i++;
+			write(1, &argv[1][len], 1);
+			len--;
 		}
-		while (i--)
-		{
-			write(1, &argv[1][i], 1);
-		}
-		
-		
 	}
 	write(1, "\n", 1);
 	return(0);
