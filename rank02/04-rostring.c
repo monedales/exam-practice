@@ -23,71 +23,36 @@ $>./rostring | cat -e
 $
 $>
 */
+#include <unistd.h>
 int	main(int argc, char **argv)
 {
 	char *str = argv[1];
-	int chr = 0, chr2;
+	int chr = 0, start, end, spaces = 0;
 	if (argc > 1)
 	{
-		while (str[chr] && str[chr] == ' ' && str[chr] == '\t')
+		while (str[chr] && (str[chr] == ' ' || str[chr] == '\t'))
 			chr++;
-		chr2 = chr; 
-		
+		start = chr; //pos inicial primeira palavra
+        while (str[chr] && (str[chr] != ' ' && str[chr] != '\t'))
+            chr++; 
+        end = chr; //pos final da primeira palavra
+        while (str[chr])
+        {
+            while (str[chr] && (str[chr] == ' ' || str[chr] == '\t'))
+                chr++; //enquanto tiver multiplos espaços ou tabs, anda
+            if (spaces)
+                write(1, " ", 1);//se a flag for 1, printa espaço
+            while (str[chr] &&  (str[chr] != ' ' && str[chr] != '\t')) 
+            { 
+                write(1, &str[chr], 1);
+                chr++;
+            }
+            spaces = 1;
+        }
+        if (spaces)
+                write(1, " ", 1);
+        write(1, &str[start], end - start);
 	}
 	write(1, "\n", 1);
 	return (0);
 }
-/*
-// ...existing code...
-#include <unistd.h>
-
-void	rostring(char *str)
-{
-    int	i;
-    int	start;
-    int	end;
-
-    i = 0;
-    /* skip leading spaces/tabs */
-    while (str[i] && (str[i] == ' ' || str[i] == '\t'))
-        i++;
-    start = i;               /* index of first word start */
-    /* if no word, nothing to do */
-    if (!str[i])
-        return ;
-    /* find end of first word */
-    while (str[i] && str[i] != ' ' && str[i] != '\t')
-        i++;
-    end = i;                 /* end is exclusive index of first word */
-
-    /* print every word that comes after the first one,
-       each followed by a single space (if any exist) */
-    while (str[i])
-    {
-        /* skip spaces between words */
-        while (str[i] && (str[i] == ' ' || str[i] == '\t'))
-            i++;
-        /* if a next word exists, print it and a space */
-        if (str[i])
-        {
-            while (str[i] && str[i] != ' ' && str[i] != '\t')
-                write(1, &str[i++], 1);
-            write(1, " ", 1);
-        }
-    }
-
-    /* finally print the first word */
-    i = start;
-    while (i < end)
-        write(1, &str[i++], 1);
-}
-
-int	main(int argc, char **argv)
-{
-    if (argc > 1)
-        rostring(argv[1]);
-    write(1, "\n", 1);
-    return (0);
-}
-
-*/
