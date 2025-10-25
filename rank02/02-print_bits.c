@@ -21,8 +21,8 @@ void	print_bits(unsigned char octet)
 		i--;
 	}
 }
-// int main()
-// {
-// 	print_bits(2);
-// 	return (0);
-// }
+int main()
+{
+	print_bits(2);
+	return (0);
+}

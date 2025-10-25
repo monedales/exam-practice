@@ -20,49 +20,48 @@ $
 void	print_hex(unsigned int number)
 {
 	// char *base = "0123456789abcdef";
-	char chr = 0;
-	unsigned int quo = number / 16;
-
 	if (number >= 16)
-		print_hex(quo);
-	if ((number % 16) < 10)
-		chr = '0' + (number % 16);
-	else if ((number % 16) >= 10)
-		chr = 'a' + ((number % 16) - 10);
-	// number = base[number % 16];
-	write(1, &chr, 1);
+		print_hex(number / 16);
+	write(1, &"0123456789abcdef"[number%16], 1);
 }
+
 int ft_atoi(char *str)
 {
-	int signal;
-	int result;
+	int result = 0, i = 0, signal = 1;
 
-	signal = 1;
-	result = 0;
-	while (*str == ' ' || *str == '\t')
-		str++;
-	if (*str == '-' || *str == '+')
+	while (str[i] == ' ' || str[i] == '\t')
+		i++;
+	if (str[i] == '-' || str[i] == '+')
 	{
-		if (str[0] == '-')
+		if (str[i] == '-')
+		{
 			signal = -signal;
-		str++;
+			i++;
+		}
+		
+		return (signal);
 	}
-	while (*str >= '0' && *str <= '9')
+	
+	while (str[i])
 	{
-		result = result * 10 + (*str - 48);
-		str++;
+		if (str[i] >= 0 && str[i] <= 9)
+		{
+			result = result * 10 + (str[i] - '0');
+		}
+		i++;
 	}
-	return (result * signal);	
+	return (signal * result);
+	
 }
-
+#include <stdlib.h>
 
 int main(int argc, char **argv)
 {
-	int nb = 0;
+	// int nb = 0;
 	if (argc == 2)
 	{
-		nb = ft_atoi(argv[1]);
-		print_hex(nb);
+		// nb = ft_atoi(argv[1]);
+		print_hex(atoi(argv[1]));
 	}
 	write(1, "\n", 1);
 	return (0);
