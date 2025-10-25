@@ -8,12 +8,12 @@ Input is always coherent.
 */
 void sort_int_tab(int *tab, unsigned int size)
 {
-	int	i = 0, j, temp = 0;
-	while (tab[i])
+	unsigned int	i = 0, j, temp = 0;
+	while (i + 1 < size)
 	{
-		while (tab[j])
+		j = i + 1;
+		while (j < size)
 		{
-			j = 0;
 			if (tab[i] > tab[j])
 			{
 				temp = tab[i];
@@ -28,14 +28,17 @@ void sort_int_tab(int *tab, unsigned int size)
 #include <stdio.h>
 int main(void)
 {
-	int tab[5] = {5, 9, 7, 3, 1};
-	int i = 0;
-	sort_int_tab(tab, 5);
-	while (tab[i])
-	{
-		printf("%d\n", tab[i]);
-		i++;
-	}
+	int tab[6] = {5, 9, 3, 7, 1, 2};
+	unsigned int i = 0;
+	sort_int_tab(tab, 6);
+	while (i < 6)
+    {
+        printf("%d", tab[i]);
+        if (i + 1 < 6)
+            printf(" ");
+        i++;
+    }
+    printf("\n");
 	
 	return (0);
 }
