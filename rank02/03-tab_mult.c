@@ -33,14 +33,41 @@ $>./tab_mult | cat -e
 $
 $>
 */
+#include <unistd.h>
+int fatoi(char *s)
+{
+    int res = 0, i = 0;
+    while (s[i] && (s[i] >= '0'&& s[i] <= '9'))
+    {
+        res = res * 10 + (s[i] - '0');
+        i++;
+    }
+    return(res);
+}
+void putnbr(int n)
+{
+    if (n > 9)
+        putnbr(n / 10);
+    write(1, &"0123456789"[n % 10], 1);
+}
 int main(int argc, char **argv)
 {
-	if (argc == 2)
-	{
-		/* code */
-	}
-	else
-		write(1, "\n", 1);
-	
-	return (0);
+    if (argc != 2)
+    {
+        write(1, "\n", 1);
+        return (0);
+    }
+    int num = fatoi(argv[1]), i = 1;
+    while (i < 10)
+    {
+        putnbr(i);
+        write(1, " x ", 3);
+        putnbr(num);
+        write(1, " = ", 3);
+        putnbr(num * i);
+        write(1, "\n", 1);
+        i++;
+    }
+    
+    return (0);
 }
