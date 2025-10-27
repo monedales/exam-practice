@@ -19,10 +19,10 @@ $
 #include <unistd.h>
 void	print_hex(unsigned int number)
 {
-	// char *base = "0123456789abcdef";
+	char *base = "0123456789abcdef";
 	if (number >= 16)
 		print_hex(number / 16);
-	write(1, &"0123456789abcdef"[number%16], 1);
+	write(1, &base[number%16], 1);
 }
 
 int ft_atoi(char *str)
@@ -44,7 +44,7 @@ int ft_atoi(char *str)
 	
 	while (str[i])
 	{
-		if (str[i] >= 0 && str[i] <= 9)
+		if (str[i] >= '0' && str[i] <= '9')
 		{
 			result = result * 10 + (str[i] - '0');
 		}
@@ -61,7 +61,7 @@ int main(int argc, char **argv)
 	if (argc == 2)
 	{
 		// nb = ft_atoi(argv[1]);
-		print_hex(atoi(argv[1]));
+		print_hex(ft_atoi(argv[1]));
 	}
 	write(1, "\n", 1);
 	return (0);

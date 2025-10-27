@@ -1,3 +1,40 @@
+// Alternative solution using a lookup table for digit values
+int digit_value(char c)
+{
+	if (c >= '0' && c <= '9')
+		return c - '0';
+	if (c >= 'a' && c <= 'f')
+		return c - 'a' + 10;
+	if (c >= 'A' && c <= 'F')
+		return c - 'A' + 10;
+	return -1;
+}
+
+int ft_atoi_base_lookup(const char *str, int str_base)
+{
+	if (str_base < 2 || str_base > 16)
+		return 0;
+	int result = 0;
+	int signal = 1;
+	int idx = 0;
+	while ((str[idx] >= '\t' && str[idx] <= '\r') || str[idx] == ' ')
+		idx++;
+	if (str[idx] == '-')
+	{
+		signal = -1;
+		idx++;
+	}
+	int val;
+	while (str[idx])
+	{
+		val = digit_value(str[idx]);
+		if (val == -1 || val >= str_base)
+			break;
+		result = result * str_base + val;
+		idx++;
+	}
+	return result * signal;
+}
 /*
 Write a function that converts the string argument str (base N <= 16)
 to an integer (base 10) and returns it.
@@ -21,10 +58,7 @@ int	ft_atoi_base(const char *str, int str_base)
 {
 	if (str_base < 2 || str_base > 16)
 		return (0);
-	int result = 0;
-	int signal = 1;
-	int digit = 0;
-	int idx = 0;
+	int result = 0, signal = 1, digit = 0, idx = 0;
 	while ((str[idx] >= '\t' && str[idx] <= '\r') || str[idx] == ' ')
 		idx++;
 	if (str[idx] == '-')

@@ -17,17 +17,14 @@ int	max(int* tab, unsigned int len)
 	int biggie;
 
 	count = 0;
-	biggie = 0;
+	biggie = tab[0];
 	if (tab == 0)
 		return (0);
-	if (len > 0)
+	while (count < len)
 	{
-		while (tab[count])
-		{
-			if (tab[count] > biggie)
-				biggie = tab[count];
-			count++;
-		}
+		if (tab[count] > biggie)
+			biggie = tab[count];
+		count++;
 	}
 	return (biggie);
 }

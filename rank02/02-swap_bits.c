@@ -15,6 +15,7 @@ _____________
      / \
  0001 | 0100
 */
+#include "02-print_bits.c"
 void	print_bits(unsigned char octet);
 unsigned char	swap_bits(unsigned char octet)
 {
@@ -22,9 +23,11 @@ unsigned char	swap_bits(unsigned char octet)
 }
 int main(void)
 {
-	// unsigned char octet = 2;
-	print_bits(2);
-	swap_bits(2);
-	print_bits(2);
+	unsigned char octet = 'A';
+	print_bits(octet);
+	write(1, "\n", 1);
+	swap_bits(octet);
+	write(1, "\n", 1);
+	print_bits(octet);
 	return (0);
 }
