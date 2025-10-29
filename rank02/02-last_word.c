@@ -24,20 +24,32 @@ $>
 #include <unistd.h>
 int main(int argc, char **argv)
 {
-	char *str = argv[1];
-	int chr = 0;
-
 	if (argc == 2)
 	{
-		while (str[chr])
-			chr++;
-		chr--;
-		while (str[chr] > 32)
-			chr--;
-		while (str[chr])
+		char *str = argv[1];
+		int end = 0;
+		// Find end of string
+		while (str[end])
+			end++;
+		end--;
+		// Skip trailing spaces/tabs
+		while (end >= 0 && (str[end] == ' ' || str[end] == '\t'))
+			end--;
+		if (end < 0)
 		{
-			write(1, &str[chr], 1);
-			chr++;
+			write(1, "\n", 1);
+			return (0);
+		}
+		// Find start of last word
+		int start = end;
+		while (start >= 0 && str[start] != ' ' && str[start] != '\t')
+			start--;
+		start++;
+		// Print last word
+		while (start <= end)
+		{
+			write(1, &str[start], 1);
+			start++;
 		}
 	}
 	write(1, "\n", 1);
