@@ -26,33 +26,43 @@ $>
 #include <unistd.h>
 int	main(int argc, char **argv)
 {
-	char *str = argv[1];
-	int chr = 0, start, end, spaces = 0;
-	if (argc > 1)
-	{
-		while (str[chr] && (str[chr] == ' ' || str[chr] == '\t'))
-			chr++;
-		start = chr; //pos inicial primeira palavra
+    char *str = argv[1];
+    int chr = 0, start, end;
+    if (argc > 1)
+    {
+        // Skip leading spaces/tabs
+        while (str[chr] && (str[chr] == ' ' || str[chr] == '\t'))
+            chr++;
+        start = chr;
+        // Find end of first word
         while (str[chr] && (str[chr] != ' ' && str[chr] != '\t'))
-            chr++; 
-        end = chr; //pos final da primeira palavra
+            chr++;
+        end = chr;
+        // Print remaining words
+        int printed = 0;
         while (str[chr])
         {
+            // Skip spaces/tabs
             while (str[chr] && (str[chr] == ' ' || str[chr] == '\t'))
-                chr++; //enquanto tiver multiplos espaços ou tabs, anda
-            if (spaces)
-                write(1, " ", 1);//se a flag for 1, printa espaço
-            while (str[chr] &&  (str[chr] != ' ' && str[chr] != '\t')) 
-            { 
-                write(1, &str[chr], 1);
                 chr++;
+            // Print word if found
+            if (str[chr] && (str[chr] != ' ' && str[chr] != '\t'))
+            {
+                if (printed)
+                    write(1, " ", 1);
+                while (str[chr] && (str[chr] != ' ' && str[chr] != '\t'))
+                {
+                    write(1, &str[chr], 1);
+                    chr++;
+                }
+                printed = 1;
             }
-            spaces = 1;
         }
-        if (spaces)
-                write(1, " ", 1);
+        // Print space only if other words were printed
+        if (printed)
+            write(1, " ", 1);
         write(1, &str[start], end - start);
-	}
-	write(1, "\n", 1);
-	return (0);
+    }
+    write(1, "\n", 1);
+    return (0);
 }
