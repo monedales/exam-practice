@@ -8,6 +8,17 @@ size_t	ft_strspn(const char *s, const char *accept);
 */
 #include <string.h>
 #include <stdio.h>
+size_t	ft_strspn(const char *s, const char *accept)
+{
+	size_t chr = 0;
+	while (s[chr])
+	{
+		
+	}
+	
+
+
+}
 int main(void)
 {
 	char *s = "hello";

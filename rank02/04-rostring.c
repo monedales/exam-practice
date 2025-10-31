@@ -27,7 +27,7 @@ $>
 int	main(int argc, char **argv)
 {
     char *str = argv[1];
-    int chr = 0, start, end;
+    int chr = 0, start, end, printed = 0;
     if (argc > 1)
     {
         // Skip leading spaces/tabs
@@ -39,7 +39,6 @@ int	main(int argc, char **argv)
             chr++;
         end = chr;
         // Print remaining words
-        int printed = 0;
         while (str[chr])
         {
             // Skip spaces/tabs
