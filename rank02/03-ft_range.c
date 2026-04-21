@@ -17,7 +17,7 @@ Examples:
 
 #include <stdio.h>
 #include <stdlib.h>
-int abs(int n)
+int ft_abs(int n)
 {
 	if (n < 0)
 		return (-n);
@@ -26,7 +26,7 @@ int abs(int n)
 
 int     *ft_range(int start, int end)
 {
-	int size = abs(start - end) + 1;
+	int size = ft_abs(start - end) + 1;
 	int *range = (int *)malloc(size * sizeof(int));
 	if (!range)
 		return (NULL);
@@ -50,7 +50,7 @@ int	main(void)
 	for (int i = 0; i < 4; i++)
 	{
 		int	*range = ft_range(start[i], end[i]);
-		int	size = abs(start[i] - end[i]) + 1;
+		int	size = ft_abs(start[i] - end[i]) + 1;
 		for (int j = 0; j < size; j++)
 			printf("%d, ", range[j]);
 		printf("\n");
