@@ -1,9 +1,9 @@
-#include "broken_gnl.h"
+#include "gnl.h"
 
 char	*ft_strchr(char *s, int c)
 {
 	int	i = 0;
-	while (s[i] != c)
+	while (s[i] != '\0' && s[i] != c)
 		i++;
 	if (s[i] == c)
 		return (s + i);
@@ -13,14 +13,23 @@ char	*ft_strchr(char *s, int c)
 
 void	*ft_memcpy(void *dest, const void *src, size_t n)
 {
-	while (--n > 0)
-		((char *)dest)[n - 1] = ((char *)src)[n - 1];
+	size_t i;
+
+	i = 0;
+
+	while (i < n)
+	{
+		((char *)dest)[i] = ((char *)src)[i];
+		i++;
+	}
 	return (dest);
 }
 
 size_t	ft_strlen(char *s)
 {
 	size_t	ret = 0;
+	if (!s)
+	 return (0);
 	while (*s)
 	{
 		s++;
@@ -35,9 +44,10 @@ int	str_append_mem(char **s1, char *s2, size_t size2)
 	char	*tmp = malloc(size2 + size1 + 1);
 	if (!tmp)
 		return (0);
-	ft_memcpy(tmp, *s1, size1);
+	if (*s1)
+		ft_memcpy(tmp, *s1, size1);
 	ft_memcpy(tmp + size1, s2, size2);
-	tmp [size1 + size2] = 0;
+	tmp [size1 + size2] = '\0';
 	free(*s1);
 	*s1 = tmp;
 	return (1);

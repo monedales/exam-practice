@@ -134,7 +134,7 @@ Examples:
 - ft_range(-1, 2) returns the array {-1, 0, 1, 2}
 */
 #include <stdlib.h>
-int abs(int n)
+int ft_abs(int n)
 {
     if(n < 0)
         n = -n;
@@ -142,7 +142,7 @@ int abs(int n)
 }
 int     *ft_range(int start, int end)
 {
-    int len = abs(end - start) + 1;
+    int len = ft_abs(end - start) + 1;
     int *range;
     int i = 0; 
     range = malloc(sizeof(int) * len);
