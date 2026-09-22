@@ -1,49 +1,50 @@
-#include <stdlib.h>   // malloc, free, atoi
-#include <stdio.h>    // printf / fprintf
+// ftabs -> issafe -> printa -> solve -> main
+#include <stdio.h>
+#include <stdlib.h>
 
-int ft_abs(int n)
+int ftabs(int n)
 {
     return (n < 0 ? -n : n);
 }
 
-int is_safe(int *board, int col, int row)
+int issafe(int *board, int col, int row)
 {
     int prev = 0;
     while(prev < col)
     {
         if(board[prev] == row)
             return (0);
-        if(ft_abs(board[prev] - row) == col - prev)
+        if(ftabs(board[prev] - row) == col - prev)
             return (0);
         prev++;
     }
-    return(1);
+    return (1);
 }
-
-void print_solution(int *board, int n)
+void print_sol(int *board, int n)
 {
     int i = 0;
-
-    while (i < n)
+    while(i < n)
     {
         fprintf(stdout, "%d", board[i]);
-        if( i < n - 1)
+        if(i < n - 1)
             fprintf(stdout, " ");
         i++;
     }
     fprintf(stdout, "\n");
 }
+
 void solve(int *board, int col, int n)
 {
     int row = 0;
-    if (col == n)
+    //caso base
+    if(col == n)
     {
-        print_solution(board, n);
+        print_sol(board, n);
         return ;
     }
     while (row < n)
     {
-        if (is_safe(board, col, row))
+        if(issafe(board, col, row))
         {
             board[col] = row;
             solve(board, col + 1, n);
@@ -51,11 +52,10 @@ void solve(int *board, int col, int n)
         row++;
     }
 }
-
 int main(int argc, char **argv)
 {
-    int n;
     int *board;
+    int n;
 
     if (argc != 2)
         return (1);
