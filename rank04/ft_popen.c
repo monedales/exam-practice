@@ -1,52 +1,107 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
+/*
+assignment name  : ft_popen
+Expected files   : ft_popen.c
+Allowed functions: pipe, fork, dup2, execvp, close, exit
+--------------------------------------------------------------------------------------
 
+Write the following function:
+
+int ft_popen(const char *file, char *const argv[], char type);
+
+The function must launch the executable file with the arguments argv (using execvp).
+If type is 'r' the function must return a file descriptor connected to the output of the command.
+If type is 'w' the function must return a file descriptor connected to the input of the command.
+In case of error or invalid parameter the function must return -1.
+
+For example, the function could be used like that:
+ main()
+{
+    int  fd;
+    char *line;
+
+    fd = ft_popen("ls", (char *const []){"ls", NULL}, 'r');
+    while ((line = get_next_line(fd)))
+        ft_putstr(line);
+    return (0);
+}
+
+
+int	main() {
+	int	fd = ft_popen("ls", (char *const []){"ls", NULL}, 'r');
+	dup2(fd, 0);
+	fd = ft_popen("grep", (char *const []){"grep", "c", NULL}, 'r');
+	char	*line;
+	while ((line = get_next_line(fd)))
+		printf("%s", line);
+}
+
+
+Hints:
+Do not leak file descriptors!
+This exercise is inspired by the libc's popen().
+*/
 
 int ft_popen(const char *file, char *const argv[], char type)
 {
     int pid;
     int fd[2];
 
+    //validar vars e pipe(fd) < 0
     if (!file || !argv || (type != 'r' && type != 'w'))
-		return -1;
-	if (pipe(fd) < 0)
-		return -1;
-	pid = fork();
-	if (pid < 0)
-	{
-		close(fd[0]);
-		close(fd[1]);
-		return -1;
-	}
-    if (pid == 0)
-    {
-        if (type == 'w')
-        {
-            dup2(fd[0], 0);
-            close(fd[0]);
-            close(fd[1]);
-        }
-        else if (type == 'r')
-        {
-            dup2(fd[1], 1);
-            close(fd[0]);
-            close(fd[1]);
-        }
-        execvp(file, argv);
-        exit(1);
-    }
-    if (type == 'w')
+        return (-1);
+    if (pipe(fd) < 0)
+        return (-1);
+    //pid = fork(); e validar se o pid < 0, fecha os 2 e retorna -1
+    pid = fork();
+    if (pid < 0)
     {
         close(fd[0]);
-        return (fd[1]);
+        close(fd[1]);
+        return (-1);
     }
-    else if (type == 'r')
+    //dup2 execvp exit -> pid == 0 -> dup2, fecha os 2, execvp, exit(1) 
+    if (pid == 0)
+    {
+        if (type == 'r')
+        {
+            if(dup2(fd[1], 1) < 0) // checa se dup falhar, fecha os fds e sai com erro
+            {
+                close(fd[0]);
+                close(fd[1]);
+                exit(-1);
+            }
+        }
+        else if (type == 'w')
+        {
+            if(dup2(fd[0], 0) < 0)
+            {
+                close(fd[0]);
+                close(fd[1]);
+                exit(-1);
+            }
+        }
+        close(fd[0]);   // filho precisa fechar as duas pontas
+        close(fd[1]);
+        execvp(file, argv);
+        exit(-1); //exec fail
+    }
+    // repete as condiçoes pro pai, fecha a que não usa, retorna a outra
+    if (type == 'r')
     {
         close(fd[1]);
         return (fd[0]);
     }
-    return (-1);
+    else if (type == 'w')
+    {
+        close(fd[0]);
+        return(fd[1]);
+    }
+    // return pro compilador nao responder "function may not return a value", mas nunca vai executar
+    // fds válidos são sempre >= 0, então retorna -1 pra não ser bug silencioso
+    return (-1); 
 }
 
 int main(void)
@@ -76,6 +131,7 @@ int main(void)
     fd = ft_popen("cat", (char *const []){"cat", NULL}, 'w');
     write(fd, "mandei isso pelo pipe!\n", 22);
     close(fd);
+    usleep(100000);
 
     // Teste 4: erro - type invalido
     printf("\n=== Teste 4: type invalido ===\n");
