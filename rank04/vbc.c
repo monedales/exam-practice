@@ -114,6 +114,11 @@ int expect(char **s, char c)
     return (0);
 }
 
+// fazer a parse_atom(char **s) -> verifica se é num ou '('
+// faer a parse_factor(char **s) -> lida com a multiplicação '*'
+// fazer a parse_add(char **s) -> lida com a soma '+'
+// refatorar a parse_expr -> chama a parse add com &s
+
 node    *parse_atom(char **s)
 {
     node *res;
